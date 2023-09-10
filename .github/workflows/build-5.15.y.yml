@@ -211,7 +211,9 @@ jobs:
 
         #sudo ./compile.sh  BOARD=${{ env.ARMBIAN_BOARD }} BRANCH=${{ env.ARMBIAN_BRANCH }}  RELEASE=${{ env.ARMBIAN_RELEASE }}  BUILD_MINIMAL=no BUILD_DESKTOP=no KERNEL_ONLY=default KERNEL_CONFIGURE=no COMPRESS_OUTPUTIMAGE=sha,img
 
-        sudo ./compile.sh  BOARD='Z28 PRO' BRANCH=${{ env.ARMBIAN_BRANCH }}  RELEASE=${{ env.ARMBIAN_RELEASE }}  BUILD_MINIMAL=no BUILD_DESKTOP=no KERNEL_ONLY=default KERNEL_CONFIGURE=no COMPRESS_OUTPUTIMAGE=sha,img
+        sudo ./compile.sh RELEASE=${{ inputs.set_release }} BOARD=odroidn2 BRANCH=current BUILD_MINIMAL=no \
+                           BUILD_ONLY=default HOST=armbian BUILD_DESKTOP=no EXPERT=yes KERNEL_CONFIGURE=no \
+                           COMPRESS_OUTPUTIMAGE="sha,img" SHARE_LOG=yes
 
 
         [ -e ./.config ] && cp -f ./.config ./output/images/.config
