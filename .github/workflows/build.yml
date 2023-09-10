@@ -60,11 +60,11 @@ on:
 
       armbianrelease:
 
-        description: '设置发布系统版本： [ buster / bullseye ]'
+        description: '设置发布系统版本： [ buster / bullseye / bookworm]'
 
         required: false
 
-        default: 'bullseye'
+        default: 'bookworm'
 
   schedule:
 
@@ -88,7 +88,7 @@ jobs:
 
   build:
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     if: github.event.repository.owner.id == github.event.sender.id
 
@@ -152,8 +152,17 @@ jobs:
 
         sudo -E apt-get -qq update
 
-        sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-2004)
+        sudo -E apt-get -qq install python3.11 aptitude
 
+        #sudo -E apt-get -qq install python3.11 build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch  python2.7 unzip zlib1g-dev lib32gcc-s1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget curl swig rsync
+
+        #sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-2004)
+
+        sudo -E apt-get -y purge azure-cli ghc* zulu* llvm* firefox google* dotnet* powershell openjdk* mongodb* moby* || true
+        sudo -E apt-get -y install $(curl -fsSL https://is.gd/depend_ubuntu2204_armbian)
+        sudo -E systemctl daemon-reload
+        #sudo -E apt-get -y full-upgrade
+        
         sudo -E apt-get -qq autoremove --purge
 
         sudo -E apt-get -qq clean
@@ -200,7 +209,10 @@ jobs:
 
         sudo chmod +x compile.sh
 
-        sudo ./compile.sh  BOARD=${{ env.ARMBIAN_BOARD }} BRANCH=${{ env.ARMBIAN_BRANCH }}  RELEASE=${{ env.ARMBIAN_RELEASE }}  BUILD_MINIMAL=no BUILD_DESKTOP=no KERNEL_ONLY=no KERNEL_CONFIGURE=no COMPRESS_OUTPUTIMAGE=sha,img
+        #sudo ./compile.sh  BOARD=${{ env.ARMBIAN_BOARD }} BRANCH=${{ env.ARMBIAN_BRANCH }}  RELEASE=${{ env.ARMBIAN_RELEASE }}  BUILD_MINIMAL=no BUILD_DESKTOP=no KERNEL_ONLY=default KERNEL_CONFIGURE=no COMPRESS_OUTPUTIMAGE=sha,img
+
+        sudo ./compile.sh  BOARD='Z28 PRO' BRANCH=${{ env.ARMBIAN_BRANCH }}  RELEASE=${{ env.ARMBIAN_RELEASE }}  BUILD_MINIMAL=no BUILD_DESKTOP=no KERNEL_ONLY=default KERNEL_CONFIGURE=no COMPRESS_OUTPUTIMAGE=sha,img
+
 
         [ -e ./.config ] && cp -f ./.config ./output/images/.config
 
@@ -243,6 +255,8 @@ jobs:
       with:
 
         path: ${{ env.FILEPATH }}/
+
+   
 
     - name: 上传 Armbian 镜像到 Release
 
