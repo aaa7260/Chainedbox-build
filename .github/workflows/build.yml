@@ -259,20 +259,7 @@ jobs:
    
 
 
-    - name: Rebuild Armbian
-        uses: ophub/amlogic-s9xxx-armbian@main
-        if: ${{ steps.clean.outputs.status }} == 'success' && !cancelled()
-        with:
-          build_target: armbian
-          armbian_path: build/output/images/*.img.gz
-          armbian_board: ${{ inputs.armbian_board }}
-          armbian_kernel: "5.15.1_6.1.1"
-          auto_kernel: 'true'
-          kernel_repo: "ophub/kernel"
-          kernel_usage: "flippy" 
-          armbian_fstype: "ext4"
-          builder_name: "ouyang"  
-          gh_token: ${{ secrets.GH_TOKEN }}
+    
 
           
     - name: 上传 Armbian 镜像到 Release
