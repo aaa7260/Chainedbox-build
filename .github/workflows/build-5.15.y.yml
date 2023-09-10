@@ -60,11 +60,11 @@ on:
 
       armbianrelease:
 
-        description: '设置发布系统版本： [ buster / bullseye ]'
+        description: '设置发布系统版本： [ buster / bullseye / bookworm]'
 
         required: false
 
-        default: 'bullseye'
+        default: 'bookworm'
 
   schedule:
 
@@ -88,7 +88,7 @@ jobs:
 
   build:
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-23.04
 
     if: github.event.repository.owner.id == github.event.sender.id
 
@@ -151,6 +151,8 @@ jobs:
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
 
         sudo -E apt-get -qq update
+
+        sudo -E apt-get -qq install python3.11
 
         sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-2004)
 
