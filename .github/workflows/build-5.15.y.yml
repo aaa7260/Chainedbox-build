@@ -266,9 +266,9 @@ jobs:
           armbian_kernel: "5.15.1_6.1.1"
           auto_kernel: 'true'
           kernel_repo: "ophub/kernel"
-          kernel_usage: "flippy" 
+          kernel_usage: "flippy"
           armbian_fstype: "ext4"
-          builder_name: "ouyang"  
+          builder_name: "ouyang"
           gh_token: ${{ secrets.GH_TOKEN }}
 
 
