@@ -98,7 +98,7 @@ EOF
 sudo sed -i 's/deb.debian.org/mirrors.ustc.edu.cn/g' $mount_point/etc/apt/sources.list.d/debian.sources
 
 cat > /etc/apt/sources.list.d/armbian.list <<EOF
-deb [arch=arm64,armhf] https://mirrors.tuna.tsinghua.edu.cn/armbian/ bullseye main bullseye-utils bullseye-desktop
+deb [arch=arm64,armhf] https://mirrors.tuna.tsinghua.edu.cn/armbian/ bookworm main bookworm-utils bookworm-desktop
 EOF
 
 sed -i 's/ENABLED=true/#ENABLED=true/' $mount_point/etc/default/armbian-zram-config
