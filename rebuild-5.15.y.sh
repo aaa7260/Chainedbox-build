@@ -64,11 +64,16 @@ sed -i '/^verbosity/cverbosity=7' $mount_point/boot/armbianEnv.txt && \
 sed -i '/rootfstype=ext4/a rootflags=rw' $mount_point/boot/armbianEnv.txt && \
 echo "extraargs=usbcore.autosuspend=-1" >> $mount_point/boot/armbianEnv.txt && \
 echo "extraboardargs=" >> $mount_point/boot/armbianEnv.txt && \
-echo "fdtfile=rk3328-l1pro-1296mhz.dtb" >> $mount_point/boot/armbianEnv.txt && \
+echo "fdtfile=rk3328-l1pro-1296mhz-changed.dtb" >> $mount_point/boot/armbianEnv.txt && \
 echo "usbstoragequirks=0x05e3:0x0612:u,0x1d6b:0x0003:u,0x05e3:0x0610:u" >> $mount_point/boot/armbianEnv.txt && \
 sed -i 's/0x9000000/0x39000000/' $mount_point/boot/boot.cmd && \
 sed -i 's#${prefix}dtb/${fdtfile}#${prefix}/${fdtfile}#' $mount_point/boot/boot.cmd
 mkimage -C none -T script -d $mount_point/boot/boot.cmd $mount_point/boot/boot.scr
+
+#cd $mount_point/boot/
+dtc -I dtb -O dts $mount_point/boot/rk3328-l1pro-1296mhz.dtb > rk3328.dts
+sed -i '/usb@ff580000/{:a;n;/.*dr_mode = "host";/!ba;s/dr_mode = "host"/dr_mode = "peripheral"/}' rk3328.dts
+dtc -I dts -O dtb rk3328.dts > $mount_point/boot/rk3328-l1pro-1296mhz-changed.dtb
 
 # patch rootfs
 echo "patch rootfs"
