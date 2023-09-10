@@ -257,9 +257,9 @@ jobs:
         path: ${{ env.FILEPATH }}/
 
     - name: Rebuild Armbian
-        uses: aaa7260/amlogic-s9xxx-armbian@main
-        if: ${{ steps.clean.outputs.status }} == 'success' && !cancelled()
-        with:
+      uses: aaa7260/amlogic-s9xxx-armbian@main
+      if: ${{ steps.clean.outputs.status }} == 'success' && !cancelled()
+      with:
           build_target: armbian
           armbian_path: build/output/images/*.img.gz
           armbian_board: ${{ inputs.armbian_board }}
